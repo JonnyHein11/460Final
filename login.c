@@ -3,6 +3,7 @@
 #define LOGIN
 
 #include "ucode.c"
+#include "stddef.h"
 int in, out, err;
 char *tty;
 
@@ -29,7 +30,8 @@ main(int argc, char *argv[]){
         gets(user);
         printf("\npassword: ");
         gets(passwd);
-
+        printf("hrllo\n");
+        
         if(authenticate(user, passwd)){
             printf("Login Successful!\nHello %s!\n",user);
             chuid(uid,gid);
@@ -43,9 +45,11 @@ main(int argc, char *argv[]){
 
 int authenticate(char user[], char passwd[]){
     // 4. open /etc/passwd file for READ;
+    printf("hrllo\n");
     int file = open("/etc/passwd", 0);
+    printf("%d\n",file);
     char buffer[1024];
-    if(file == null){
+    if(file == NULL){
         printf("Password file doesnt exist!\n");
         return 0;
     }
@@ -54,23 +58,23 @@ int authenticate(char user[], char passwd[]){
         return 0;
     }
     char *line = strtok(buffer,":\n");
-    while(line!=null){
+    while(line!=NULL){
         if (strcmp(line,user)==0){ //found user
-            line = strtok(null, ":\n"); //grabbing the passwd
+            line = strtok(NULL, ":\n"); //grabbing the passwd
 
             if(strcmp(line, passwd)==0){
-                uid = atoi(strtok(null, ":\n"));
-                gid = atoi(strtok(null, ":\n"));
-                strcpy(uname, strtok(null, ":\n"));
+                uid = atoi(strtok(NULL, ":\n"));
+                gid = atoi(strtok(NULL, ":\n"));
+                strcpy(uname, strtok(NULL, ":\n"));
                 strcpy(name,user);
-                strcpy(home, strtok(null, ":\n"));
-                strcpy(program, strtok(null,":\n"));
+                strcpy(home, strtok(NULL, ":\n"));
+                strcpy(program, strtok(NULL,":\n"));
 
                 close(file);
                 return 1;
             }
         }
-        line = strtok(null,":\n"); //next line
+        line = strtok(NULL,":\n"); //next line
     }
     close(file);
     return 0;
